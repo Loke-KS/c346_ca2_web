@@ -68,3 +68,14 @@ app.delete('/deleteactivity/:id', async (req, res) => {
         res.status(500).json({ message: 'Server error - could not delete activity ' + id });
     }
 });
+
+app.get('/allpoints', async (req,res) => {
+    try {
+        let connection = await mysql.createConnection(dbConfig);
+        const [rows] = await connection.execute('SELECT points FROM defaultdb.activities');
+        res.json(rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error for all points' });
+    }
+});
