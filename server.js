@@ -28,7 +28,7 @@ app.get('/allactivities', async (req,res) => {
         res.json(rows);
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'Server error for all cards' });
+        res.status(500).json({ message: 'Server error for all activities' });
     }
 });
 
@@ -40,7 +40,7 @@ app.post('/addactivity', async (req, res) => {
         res.status(201).json({ message: 'Activity '+activity_name+' added successfully'});
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'Server error - could not add card '+activity_name });
+        res.status(500).json({ message: 'Server error - could not add activity '+activity_name });
     }
 });
 
