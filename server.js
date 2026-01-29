@@ -33,23 +33,23 @@ app.get('/allactivities', async (req,res) => {
 });
 
 app.post('/addactivity', async (req, res) => {
-    const { activity_name, category, points } = req.body;
+    const { name, category, points, date, notes, created_at } = req.body;
     try {
         let connection = await mysql.createConnection(dbConfig);
-        await connection.execute('INSERT INTO activities (activity_name, category, points) VALUES (?, ?, ?)', [activity_name, category, points]);
-        res.status(201).json({ message: 'Activity '+activity_name+' added successfully'});
+        await connection.execute('INSERT INTO activities (name, category, points, date, notes, created_at) VALUES (?, ?, ?, ?, ?, ?)', [name, category, points, date, notes ,created_at]);
+        res.status(201).json({ message: 'Activity '+name+' added successfully'});
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'Server error - could not add activity '+activity_name });
+        res.status(500).json({ message: 'Server error - could not add activity '+name });
     }
 });
 
 app.put('/updateactivity/:id', async (req, res) => {
     const { id } = req.params;
-    const { activity_name, category, points } = req.body;
+    const { name, category, points, date, notes, created_at  } = req.body;
     try{
         let connection = await mysql.createConnection(dbConfig);
-        await connection.execute('UPDATE activities SET activity_name=?, category=?, points=? WHERE id=?', [activity_name, category, points, id]);
+        await connection.execute('UPDATE activities SET name=?, category=?, points=?, date=?, notes=?, created_at=? WHERE id=?', [name, category, points, date, notes ,created_at, id]);
         res.status(201).json({ message: 'Activity ' + id + ' updated successfully!' });
     } catch (err) {
         console.error(err);
