@@ -33,10 +33,10 @@ app.get('/allactivities', async (req,res) => {
 });
 
 app.post('/addactivity', async (req, res) => {
-    const { activity_name, key_pillar, points } = req.body;
+    const { activity_name, category, points } = req.body;
     try {
         let connection = await mysql.createConnection(dbConfig);
-        await connection.execute('INSERT INTO activities (activity_name, key_pillar, points) VALUES (?, ?, ?)', [activity_name, key_pillar, points]);
+        await connection.execute('INSERT INTO activities (activity_name, category, points) VALUES (?, ?, ?)', [activity_name, category, points]);
         res.status(201).json({ message: 'Activity '+activity_name+' added successfully'});
     } catch (err) {
         console.error(err);
@@ -46,10 +46,10 @@ app.post('/addactivity', async (req, res) => {
 
 app.put('/updateactivity/:id', async (req, res) => {
     const { id } = req.params;
-    const { activity_name, key_pillar, points } = req.body;
+    const { activity_name, category, points } = req.body;
     try{
         let connection = await mysql.createConnection(dbConfig);
-        await connection.execute('UPDATE activities SET activity_name=?, key_pillar=?, points=? WHERE id=?', [activity_name, key_pillar, points, id]);
+        await connection.execute('UPDATE activities SET activity_name=?, category=?, points=? WHERE id=?', [activity_name, category, points, id]);
         res.status(201).json({ message: 'Activity ' + id + ' updated successfully!' });
     } catch (err) {
         console.error(err);
