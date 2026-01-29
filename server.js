@@ -36,7 +36,7 @@ app.post('/addactivity', async (req, res) => {
     const { activity_name, key_pillar, points } = req.body;
     try {
         let connection = await mysql.createConnection(dbConfig);
-        await connection.execute('INSERT INTO activities (ativity_name, key_pillar, points) VALUES (?, ?, ?)', [activity_name, key_pillar, points]);
+        await connection.execute('INSERT INTO activities (activity_name, key_pillar, points) VALUES (?, ?, ?)', [activity_name, key_pillar, points]);
         res.status(201).json({ message: 'Activity '+activity_name+' added successfully'});
     } catch (err) {
         console.error(err);
