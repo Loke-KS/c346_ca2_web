@@ -26,6 +26,7 @@ app.get('/allactivities', async (req,res) => {
     try {
         let connection = await mysql.createConnection(dbConfig);
         const [rows] = await connection.execute('SELECT * FROM defaultdb.activities');
+        await connection.end();
         res.json(rows);
     } catch (err) {
         console.error(err);
@@ -34,10 +35,11 @@ app.get('/allactivities', async (req,res) => {
 });
 
 app.post('/addactivity', async (req, res) => {
-    const { name, category, points, date, notes, created_at } = req.body;
+    const { name, category, points, date, notes } = req.body;
     try {
         let connection = await mysql.createConnection(dbConfig);
-        await connection.execute('INSERT INTO activities (name, category, points, date, notes) VALUES (?, ?, ?, ?, ?)', [name, category, points, date, notes ,created_at]);
+        await connection.execute('INSERT INTO defaultdb.activities (name, category, points, date, notes) VALUES (?, ?, ?, ?, ?)', [name, category, points, date, notes]);
+        await connection.end();
         res.status(201).json({ message: 'Activity '+name+' added successfully'});
     } catch (err) {
         console.error(err);
@@ -47,10 +49,11 @@ app.post('/addactivity', async (req, res) => {
 
 app.put('/updateactivity/:id', async (req, res) => {
     const { id } = req.params;
-    const { name, category, points, date, notes, created_at  } = req.body;
+    const { name, category, points, date, notes } = req.body;
     try{
         let connection = await mysql.createConnection(dbConfig);
-        await connection.execute('UPDATE activities SET name=?, category=?, points=?, date=?, notes=? WHERE id=?', [name, category, points, date, notes, id]);
+        await connection.execute('UPDATE defaultdb.activities SET name=?, category=?, points=?, date=?, notes=? WHERE id=?', [name, category, points, date, notes, id]);
+        await connection.end();
         res.status(201).json({ message: 'Activity ' + id + ' updated successfully!' });
     } catch (err) {
         console.error(err);
@@ -62,7 +65,8 @@ app.delete('/deleteactivity/:id', async (req, res) => {
     const { id } = req.params;
     try{
         let connection = await mysql.createConnection(dbConfig);
-        await connection.execute('DELETE FROM activities WHERE id=?', [id]);
+        await connection.execute('DELETE FROM defaultdb.activities WHERE id=?', [id]);
+        await connection.end();
         res.status(201).json({ message: 'Activity ' + id + ' deleted successfully!' });
     } catch (err) {
         console.error(err);
@@ -74,6 +78,7 @@ app.get('/allpoints', async (req,res) => {
     try {
         let connection = await mysql.createConnection(dbConfig);
         const [rows] = await connection.execute('SELECT points FROM defaultdb.activities');
+        await connection.end();
         res.json(rows);
     } catch (err) {
         console.error(err);
